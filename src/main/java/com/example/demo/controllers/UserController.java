@@ -12,12 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
-
+    @CrossOrigin("*")
     @GetMapping("get-first-name")
     public String getFirstName() {
         return "Nikola";
     }
 
+    @CrossOrigin("*")
     @GetMapping("get-first-name-list")
     public List<String> getFirstNameList() {
         return List.of("Nikola", "Milan", "Petar");
@@ -32,7 +33,6 @@ public class UserController {
     public ResponseEntity<?> createUserBodyL(@RequestBody @Valid UserModel userModel, BindingResult result) {
         if(result.hasErrors()) {
             return new ResponseEntity<>("Neuspesno registrovan!", HttpStatus.INTERNAL_SERVER_ERROR);
-//            return ResponseEntity.badRequest().body(result);
         }
         return new ResponseEntity<UserModel>(userModel, HttpStatus.CREATED);
     }
