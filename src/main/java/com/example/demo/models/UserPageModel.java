@@ -9,5 +9,5 @@ import java.util.List;
 public class UserPageModel {
     private List<UserModel> Users;
     private Integer totalPages;
-    private Integer totalElements;
+    private Long totalElements;
 }

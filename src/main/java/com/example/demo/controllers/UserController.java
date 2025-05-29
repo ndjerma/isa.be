@@ -20,7 +20,8 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("user")
-//@RequiredArgsConstructor
+//@RequiredArgsConstructor          //strah me da otkomentarisem ovo da ne sjebem nesto
+@CrossOrigin("*")
 public class UserController {
 
     private final IUserRepository userRepository; //dependency? mislim da da

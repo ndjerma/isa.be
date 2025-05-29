@@ -44,7 +44,7 @@ public class UserMapper {
         return UserPageModel.builder()
                 .Users(toModelList(pageEntity.getContent()))
                 .totalPages(pageEntity.getTotalPages())
-                .totalElements(pageEntity.getNumberOfElements())
+                .totalElements(pageEntity.getTotalElements())
                 .build();
     }
 
