@@ -2,8 +2,11 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.User;
 import com.example.demo.mappers.UserMapper;
+import com.example.demo.mappers.UserProductsMapper;
 import com.example.demo.models.UserModel;
 import com.example.demo.models.UserPageModel;
+import com.example.demo.models.UserProductsModel;
+import com.example.demo.repositories.IUserProductsRepository;
 import com.example.demo.repositories.IUserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +23,12 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("user")
-//@RequiredArgsConstructor          //strah me da otkomentarisem ovo da ne sjebem nesto
+@RequiredArgsConstructor          //ovo automatski pise konstruktore, olaksava nam dependencyInjection
 @CrossOrigin("*")
 public class UserController {
 
     private final IUserRepository userRepository; //dependency? mislim da da
-    public UserController(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final IUserProductsRepository userProductsRepository;   // dependencyInjection za usera koji ima i proizvode
 
     @CrossOrigin("*")
     @GetMapping("get-first-name")
@@ -35,9 +36,16 @@ public class UserController {
         return "Nikola";
     }
 
+    // Vraca listu korisnika
     @GetMapping("get-user-list")
     public List<UserModel> getUserList() {
         return UserMapper.toModelList(userRepository.findAll());
+    }
+
+    // Vraca listu korisnika koji su kupili proizvod
+    @GetMapping("get-user-products-list")
+    public List<UserProductsModel> getUserProductsList() {
+        return UserProductsMapper.toModelList(userProductsRepository.findAll());
     }
 
     @GetMapping("get-user-page-list")
