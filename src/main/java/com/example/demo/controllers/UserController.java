@@ -47,4 +47,13 @@ public class UserController {
         return new ResponseEntity<>(userService.create(userModel), HttpStatus.CREATED);
     }
 
+    @PostMapping("update")
+        public ResponseEntity<?> update(@RequestBody @Valid UserModel userModel, BindingResult result) {
+            if(result.hasErrors()) {
+                return new ResponseEntity<>("Neuspesno updated korisnik!", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return new ResponseEntity<>(userService.update(userModel), HttpStatus.CREATED);
+        }
+
 }

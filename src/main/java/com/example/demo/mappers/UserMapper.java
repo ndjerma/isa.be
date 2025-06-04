@@ -15,7 +15,7 @@ public class UserMapper {
     // za upis cistog usera (bez producta)
     public static User toEntity(UserModel model){
         User user = new User();
-        //user.setId(model.getId());            tokom upisa ne smem da imam id, jer baza generise automatski ID
+        user.setId(model.getId());
         user.setFirstName(model.getFirstName());
         user.setLastName(model.getLastName());
         user.setEmail(model.getEmail());
