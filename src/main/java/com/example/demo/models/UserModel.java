@@ -18,6 +18,4 @@ public class UserModel {
     private String email;
     @ContactNumberConstraint
     private String contactNumber;
-
-
 }
