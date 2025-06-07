@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.user.UserException;
 import com.example.demo.mappers.UserMapper;
 import com.example.demo.mappers.UserProductsMapper;
 import com.example.demo.models.UserModel;
@@ -7,10 +8,12 @@ import com.example.demo.models.UserPageModel;
 import com.example.demo.models.UserProductsModel;
 import com.example.demo.repositories.IUserProductsRepository;
 import com.example.demo.repositories.IUserRepository;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public class UserService implements IUserService {
 
     private final IUserRepository userRepository; //RequiredArgsConstructor sam implementira konstruktor, ovo je samo DepInjection
     private final IUserProductsRepository userProductsRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<UserModel> findAll() {
@@ -38,7 +42,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserModel create(UserModel model) {
-       var entity = UserMapper.toEntity(model);
+       var entity = UserMapper.toEntity(model, passwordEncoder);
 
        var result = userRepository.save(entity);
 
@@ -50,11 +54,15 @@ public class UserService implements IUserService {
 
     @Override
     public UserModel update(UserModel model) {
-        var entity = UserMapper.toEntity(model);
+        var entity = UserMapper.toEntity(model, passwordEncoder);
+        try {
+            var result = userRepository.save(entity);
+            return UserMapper.toModel(result);
+        } catch (Exception e) {
+            throw new UserException(e.getMessage());
+        }
 
-        var result = userRepository.save(entity);
 
-        return UserMapper.toModel(result);
     }
 
     @Override
