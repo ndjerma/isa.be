@@ -15,13 +15,14 @@ import java.util.List;
 public class UserMapper {
 
     // za upis cistog usera (bez producta)
-    public static User toEntity(UserModel model){
+    public static User toEntity(UserModel model, PasswordEncoder passwordEncoder){
         User user = new User();
         user.setId(model.getId());
         user.setFirstName(model.getFirstName());
         user.setLastName(model.getLastName());
         user.setEmail(model.getEmail());
         user.setContactNumber(model.getContactNumber());
+        user.setPassword(passwordEncoder.encode(model.getPassword()));
         return user;
     }
     // za upis registrovanog korisnika
