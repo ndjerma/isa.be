@@ -4,6 +4,7 @@ import com.example.demo.entities.User;
 import com.example.demo.models.LoginResponseModel;
 import com.example.demo.models.LoginUserModel;
 import com.example.demo.models.RegisterUserModel;
+import com.example.demo.models.UserModel;
 import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final JwtService jwtService;
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserModel registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
-
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<UserModel> register(@RequestBody RegisterUserModel model) {
+        return ResponseEntity.ok(authenticationService.signup(model));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseModel> authenticate(@RequestBody LoginUserModel loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
-
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponseModel loginResponse = new LoginResponseModel();
-        loginResponse.setToken(jwtToken);
-
-        return ResponseEntity.ok(loginResponse);
+    public ResponseEntity<LoginResponseModel> authenticate(@RequestBody LoginUserModel model) {
+        return ResponseEntity.ok(authenticationService.authenticate(model));
     }
 }
